@@ -1,5 +1,6 @@
 variable "region" {
   type        = string
+  default     = "us-west-2"
   description = <<-EOT
   AWS region to perform all our operations in.
   EOT
@@ -7,8 +8,30 @@ variable "region" {
 
 variable "cluster_name" {
   type        = string
+  default     = "pangeo-flink-runner"
   description = <<-EOT
   Name of EKS cluster to create
+  EOT
+}
+
+variable "aws_tags" {
+  type        = map(string)
+  default     = {
+    "wma:project_id"     = "hytest"
+    "wma:application_id" = "pangeo_forge_runner"
+    "wma:contact"        = "thodson@usgs.gov"
+  }
+  description = <<-EOT
+  (Optional) AWS resource tags.
+  EOT
+}
+
+variable "permissions_boundary" {
+  type        = string
+  default     = "arn:aws:iam::807615458658:policy/csr-Developer-Permissions-Boundary"
+  description = <<-EOT
+  (Optional) ARN of the policy that is used to set the permissions boundary for
+  the role.
   EOT
 }
 
@@ -45,7 +68,7 @@ variable "max_instances" {
 }
 
 variable "flink_operator_version" {
-  default     = "1.5.0"
+  default     = "1.6.1"
   description = <<-EOT
   Version of Flink Operator to install.
   EOT

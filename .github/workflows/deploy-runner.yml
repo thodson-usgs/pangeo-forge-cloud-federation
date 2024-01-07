@@ -1,0 +1,24 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Deploy flink runner
+
+# Controls when the workflow will run
+on:
+  workflow_dispatch:
+    inputs:
+      aws_access_key_id:
+        required: True
+      aws_secret_access_key:
+        required: True
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          echo "Key: $AWS_ACCESS_KEY_ID"
+          echo "Secret: $AWS_SECRET_ACCESS_KEY"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ inputs.aws_access_key_id }}
+          AWS_SECRET_ACCESS_KEY: ${{ inputs.aws_secret_access_key }}
