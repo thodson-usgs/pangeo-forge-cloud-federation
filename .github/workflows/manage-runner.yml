@@ -1,0 +1,59 @@
+name: Manage runner
+run-name: terraform ${{ inputs.action }} by @${{ github.actor }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      aws_access_key_id:
+        required: True
+      aws_secret_access_key:
+        required: True
+      aws_session_token:
+        required: True
+      cluster:
+        description: "cluster name"
+        type: choice
+        options:
+          - usgs-us-west-2
+        default: usgs-us-west-2
+      action:
+        description: "cluster action"
+        type: choice
+        options:
+          - apply
+          - destroy
+
+jobs:
+  manage-cluster:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: install kubectl
+        run: |
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          chmod +x ./kubectl
+          sudo mv ./kubectl /usr/local/bin/kubectl
+
+      # Install the selected version of Terraform CLI 
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        #with:
+        #  terraform_version: ${{ secrets.TERRAFORM_VERSION }}
+
+      - name: ${{ inputs.action}} Flink cluster
+        id: terraform-action
+        working-directory: ./terraform/aws
+        env:
+          AWS_ACCESS_KEY_ID: ${{ inputs.aws_access_key_id }}
+          AWS_SECRET_ACCESS_KEY: ${{ inputs.aws_secret_access_key }}
+          AWS_SESSION_TOKEN: ${{ inputs.aws_session_token }}
+          TF_VAR_REGION: ${{ inputs.aws_region }}
+          CLUSTER_CONFIG: ./bakeries/${{ inputs.cluster }}.tfvars
+          ACTION: ${{ inputs.action }}
+          #TF_LOG: INFO
+          TF_INPUT: false
+        run: |
+          terraform init
+          terraform  $ACTION -var-file=$CLUSTER_CONFIG -auto-approve
+

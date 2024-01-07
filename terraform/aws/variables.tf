@@ -13,19 +13,10 @@ variable "cluster_name" {
 }
 
 variable "aws_tags" {
-  type        = map(string)
-  default     = {}
+  type    = map(string)
+  default = null
   description = <<-EOT
   (Optional) AWS resource tags.
-  EOT
-}
-
-variable "permissions_boundary" {
-  type        = string
-  default     = null
-  description = <<-EOT
-  (Optional) ARN of the policy that is used to set the permissions boundary for
-  the role.
   EOT
 }
 
@@ -39,6 +30,16 @@ variable "aws_vpc" {
   (Optional) AWS VPC configuration.
   EOT
 }
+
+variable "permissions_boundary" {
+  type        = string
+  default     = null
+  description = <<-EOT
+  (Optional) ARN of the policy that is used to set the permissions boundary for
+  the role.
+  EOT
+}
+
 
 variable "instance_type" {
   default     = "t3.large"
@@ -56,7 +57,7 @@ variable "max_instances" {
 }
 
 variable "flink_operator_version" {
-  default     = "1.5.0"
+  default     = "1.6.1"
   description = <<-EOT
   Version of Flink Operator to install.
   EOT
@@ -89,6 +90,7 @@ variable "prometheus_version" {
   Version of the prometheus helm chart to install
   EOT
 }
+
 variable "prometheus_disk_size" {
   default     = "16Gi"
   description = <<-EOT
