@@ -1,3 +1,6 @@
+def str2bool(v):
+  return v.lower() in ("yes", "true", "t", "1")
+
 BUCKET_PREFIX = "s3://<bucket-name>/<some-prefix>/"
 # The storage backend we want
 s3_fsspec = "s3fs.S3FileSystem"
