@@ -38,13 +38,39 @@ on:
         default: '1'
 
 jobs:
-  deploy:
+  run-job:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Run recipe
+
+      - name: set up aws credentials for job runner user
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ inputs.aws_access_key_id }}
+          aws-secret-access-key: ${{ inputs.aws_secret_access_key }}
+          aws-session-token: ${{ inputs.aws_session_token }}
+
+      - name: install kubectl
         run: |
-          pip install client-requirements.txt
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          chmod +x ./kubectl
+          sudo mv ./kubectl /usr/local/bin/kubectl
+
+      - name: update kubeconfig with cluster
+        run: |
+          aws eks update-kubeconfig --name ${{ inputs.cluster_name }} --region ${{ inputs.aws_region }}
+
+      - name: set up python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.10'
+          
+      - name: install deps
+        run: |
+          pip install requirements.txt
+
+      - name: run recipe
+        run: |
           pangeo-forge-runner bake \
               --repo=$RECIPE_URL  \
               --ref="0.10.3" \
