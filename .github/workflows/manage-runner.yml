@@ -50,7 +50,7 @@ jobs:
         #with:
         #  terraform_version: ${{ secrets.TERRAFORM_VERSION }}
 
-      - name: Terraform ${{ inputs.action}} $${{ inputs.cluster }}
+      - name: Terraform ${{ inputs.action}} ${{ inputs.cluster }}
         id: terraform-action
         working-directory: ./terraform/aws
         env:
