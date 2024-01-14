@@ -1,5 +1,5 @@
 name: Manage runner
-run-name: Terraform ${{ inputs.action }} by @${{ github.actor }}
+run-name: Terraform ${{ inputs.action }} ${{ inputs.cluster }} by @${{ github.actor }}
 
 on:
   workflow_dispatch:
