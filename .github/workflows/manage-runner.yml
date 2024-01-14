@@ -38,7 +38,7 @@ jobs:
           aws-secret-access-key: ${{ inputs.aws-secret-access-key }}
           aws-session-token: ${{ inputs.aws-session-token }}
 
-      - name: install kubectl
+      - name: Install kubectl
         run: |
           curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
           chmod +x ./kubectl
@@ -50,7 +50,7 @@ jobs:
         #with:
         #  terraform_version: ${{ secrets.TERRAFORM_VERSION }}
 
-      - name: ${{ inputs.action}} Flink cluster
+      - name: Terraform ${{ inputs.action}} $${{ inputs.cluster }}
         id: terraform-action
         working-directory: ./terraform/aws
         env:
