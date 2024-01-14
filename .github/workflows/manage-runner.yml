@@ -44,7 +44,7 @@ jobs:
           chmod +x ./kubectl
           sudo mv ./kubectl /usr/local/bin/kubectl
 
-      # Install the selected version of Terraform CLI 
+      # Install the selected version of Terraform CLI
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         #with:
