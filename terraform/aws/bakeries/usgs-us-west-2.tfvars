@@ -17,3 +17,5 @@ aws_vpc = {
 permissions_boundary = "arn:aws:iam::807615458658:policy/csr-Developer-Permissions-Boundary"
 
 prometheus_hostname = "prometheus.us-west-2.aws.bakeries.pangeo-forge-usgs.omgwtf.in"
+
+buckets = ["pangeo-forge-usgs-runner"]

@@ -39,10 +39,17 @@ resource "helm_release" "flink_operator" {
     type  = "string"
   }
 
-  # Enable prometheus metrics for all
   set {
     name = "defaultConfiguration.flink-conf\\.yaml"
     value = yamlencode({
+      # Enable checkpoint for spot instances
+      "state.backend.type" : "hashmap",
+      # TODO create this bucket by default and append the others
+      "state.checkpoints.dir" : "s3://${var.buckets[0]}/flink-app/checkpoints",
+      "state.savepoints.dir" : "s3://${var.buckets[0]}/flink-app/savepoints",
+      "execution.checkpointing.interval" : "5000",
+
+      # Enable prometheus metrics for all
       "kubernetes.operator.metrics.reporter.prom.class" : "org.apache.flink.metrics.prometheus.PrometheusReporter",
       "kubernetes.operator.metrics.reporter.prom.port" : "9999",
       "kubernetes.jobmanager.annotations" : {
