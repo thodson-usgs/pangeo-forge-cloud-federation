@@ -53,7 +53,7 @@ jobs:
         id: terraform-action
         working-directory: ./terraform/aws
         env:
-          TF_VAR_REGION: ${{ inputs.aws-region }} # not set
+          #TF_VAR_REGION: ${{ inputs.aws-region }}
           CLUSTER_CONFIG: ./bakeries/${{ inputs.cluster }}.tfvars
           ACTION: ${{ inputs.action }}
           #TF_LOG: INFO
