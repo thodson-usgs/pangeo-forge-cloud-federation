@@ -4,11 +4,11 @@ run-name: terraform ${{ inputs.action }} by @${{ github.actor }}
 on:
   workflow_dispatch:
     inputs:
-      aws_access_key_id:
+      aws-access-key-id:
         required: True
-      aws_secret_access_key:
+      aws-secret-access-key:
         required: True
-      aws_session_token:
+      aws-session-token:
         required: True
       cluster:
         description: "cluster name"
@@ -27,7 +27,16 @@ jobs:
   manage-cluster:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Terraform repo
       - uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ inputs.aws-region }}
+          aws-access-key-id: ${{ inputs.aws-access-key-id }}
+          aws-secret-access-key: ${{ inputs.aws-secret-access-key }}
+          aws-session-token: ${{ inputs.aws-session-token }}
 
       - name: install kubectl
         run: |
@@ -45,10 +54,7 @@ jobs:
         id: terraform-action
         working-directory: ./terraform/aws
         env:
-          AWS_ACCESS_KEY_ID: ${{ inputs.aws_access_key_id }}
-          AWS_SECRET_ACCESS_KEY: ${{ inputs.aws_secret_access_key }}
-          AWS_SESSION_TOKEN: ${{ inputs.aws_session_token }}
-          TF_VAR_REGION: ${{ inputs.aws_region }}
+          TF_VAR_REGION: ${{ inputs.aws-region }}
           CLUSTER_CONFIG: ./bakeries/${{ inputs.cluster }}.tfvars
           ACTION: ${{ inputs.action }}
           #TF_LOG: INFO
@@ -56,4 +62,3 @@ jobs:
         run: |
           terraform init
           terraform  $ACTION -var-file=$CLUSTER_CONFIG -auto-approve
-
