@@ -1,5 +1,4 @@
 name: Validate Terraform
-run-name: Validate Terraform by @${{ github.actor }}
 
 on:
   push:
