@@ -26,5 +26,5 @@ jobs:
         id: validate
         working-directory: ./terraform/aws
         run: |
-          terraform init -input=false -backend-config="backend_override.tf"
+          terraform init -input=false
           terraform validate
