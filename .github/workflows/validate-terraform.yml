@@ -12,6 +12,9 @@ jobs:
     steps:
       - name: Checkout Terraform repo
         uses: actions/checkout@v3
+        run: |
+          cp .github/workflows/local-backend.tf terraform/aws/
+      
 
       # Install the selected version of Terraform CLI 
       - name: Setup Terraform
@@ -19,10 +22,9 @@ jobs:
         #with:
         #  terraform_version: ${{ secrets.TERRAFORM_VERSION }}
 
-      - name: Terraform Validate
+      - name: Validate AWS runner
         id: validate
         working-directory: ./terraform/aws
-
         run: |
-          terraform init -input=false -backend-config="KEY=VALUE"
+          terraform init -input=false -backend-config="local-backend.tf"
           terraform validate
