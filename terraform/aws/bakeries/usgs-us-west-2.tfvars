@@ -1,7 +1,7 @@
 # Default USGS pangeo-forge bakery
 region = "us-west-2"
 
-cluster_name = "pangeo-forge-usgs"
+cluster_name = "usgs-pforge"
 
 aws_tags = {
   "wma:project_id"     = "hytest"
@@ -17,3 +17,5 @@ aws_vpc = {
 permissions_boundary = "arn:aws:iam::807615458658:policy/csr-Developer-Permissions-Boundary"
 
 prometheus_hostname = "prometheus.us-west-2.aws.bakeries.pangeo-forge-usgs.omgwtf.in"
+
+buckets = ["usgs-pforge-cache"]
