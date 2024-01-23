@@ -22,7 +22,7 @@ jobs:
         id: validate
         working-directory: ./terraform/aws
         run: |
-          terraform init -backend-config="backend=local \
+          terraform init -backend-config="backend=local" \
                          -backend-config="path=local.tfstate" \
                          -input=false
           terraform validate
