@@ -12,10 +12,6 @@ jobs:
       - name: Checkout Terraform repo
         uses: actions/checkout@v3
 
-      - name: Configure local backend
-        run: |
-          cp ci/backend_override.tf terraform/aws/
-
       # Install the selected version of Terraform CLI 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
@@ -26,5 +22,5 @@ jobs:
         id: validate
         working-directory: ./terraform/aws
         run: |
-          terraform init -input=false
+          terraform init -backend-config=../../ci/backend_override.tf -input=false
           terraform validate
