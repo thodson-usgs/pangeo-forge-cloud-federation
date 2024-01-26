@@ -45,7 +45,7 @@ resource "helm_release" "flink_operator" {
       # Failure recovery
       "restart-strategy" : "exponential-delay",
       "restart-strategy.exponential-delay.initial-backoff" : "10 s",
-      "restart-strategy.exponential-delay.max-backoff" : "5 min",
+      "restart-strategy.exponential-delay.max-backoff" : "20 min",
 
       # Enable prometheus metrics for all
       "kubernetes.operator.metrics.reporter.prom.class" : "org.apache.flink.metrics.prometheus.PrometheusReporter",
