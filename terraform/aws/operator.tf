@@ -49,6 +49,9 @@ resource "helm_release" "flink_operator" {
         "prometheus.io/scrape" : "true"
         "prometheus.io/port" : "9999"
       }
+      # Configure node groups
+      "kubernetes.jobmanager.node-selector" : {"eks.amazonaws.com/nodegroup" : "$(var.node_groups.jobmanager.node_group_name)"}
+      "kubernetes.taskmanager.node-selector" : {"eks.amazonaws.com/nodegroup" : "${var.node_groups.taskmanager.node_group_name}"}
     })
   }
 

@@ -40,20 +40,24 @@ variable "permissions_boundary" {
   EOT
 }
 
+variable "node_groups" {
+  description = "Flink node groups."
+  type        = map(any)
 
-variable "instance_type" {
-  default     = "t3.large"
-  description = <<-EOT
-  AWS Instance type used for nodes.
-  EOT
-}
-
-variable "max_instances" {
-  default     = 10
-  type        = number
-  description = <<-EOT
-  Maximum number of instances the autoscaler will scale the cluster up to.
-  EOT
+  default = {
+    jobmanager = {
+      node_group_name = "flink-jobmanager"
+      max_instances = 10
+      instance_types = ["t3.large"]
+      capacity_type = "ON_DEMAND"
+    },
+    taskmanager = {
+      node_group_name = "flink-taskmanager"
+      max_instances = 10
+      instance_types = ["t3.large"]
+      capacity_type = "SPOT"
+    }
+  }
 }
 
 variable "flink_operator_version" {
