@@ -42,6 +42,11 @@ resource "aws_eks_node_group" "flink_nodes" {
 
   capacity_type = each.value.capacity_type
 
+  tags = {
+    "k8s.io/cluster-autoscaler/${var.cluster_name}" = ""
+    "k8s.io/cluster-autoscaler/enabled" = ""
+  }
+
   scaling_config {
     desired_size = 1
     max_size     = each.value.max_instances
@@ -52,6 +57,7 @@ resource "aws_eks_node_group" "flink_nodes" {
     # Allow cluster-autoscaler to change the size of nodepool without messing up terraform
     ignore_changes = [scaling_config[0].desired_size]
   }
+
   update_config {
     max_unavailable = 1
   }
