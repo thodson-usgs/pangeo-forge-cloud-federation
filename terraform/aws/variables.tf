@@ -48,7 +48,7 @@ variable "node_groups" {
     jobmanager = {
       node_group_name = "flink-jobmanager"
       max_instances = 10
-      instance_types = ["t3.large"]
+      instance_types = ["t3.micro"]
       capacity_type = "ON_DEMAND"
     },
     taskmanager = {
