@@ -42,7 +42,7 @@ resource "aws_eks_node_group" "flink_nodes" {
 
   capacity_type = each.value.capacity_type
 
-  tags = merge({"k8s.io/cluster-autoscaler/${var.cluster_name}" = "", "k8s.io/cluster-autoscaler/enabled" = ""}, var.aws_tags)
+  #tags = {"k8s.io/cluster-autoscaler/${var.cluster_name}" = "", "k8s.io/cluster-autoscaler/enabled" = ""}
 
   scaling_config {
     desired_size = 1
