@@ -33,6 +33,7 @@ resource "helm_release" "flink_operator" {
     # Annotations *must* have string values, so we force these to be strings
     type = "string"
   }
+
   set {
     name  = "operatorPod.annotations.prometheus\\.io/port"
     value = "9999"
@@ -41,7 +42,7 @@ resource "helm_release" "flink_operator" {
 
   set {
     name = "operatorPod.nodeSelector"
-    value = "eks.amazonaws.com/nodegroup:${var.node_groups.taskmanager.node_group_name}"
+    value = "eks.amazonaws.com/nodegroup:${var.node_groups.spot.node_group_name}"
   }
 
   set {
@@ -51,9 +52,9 @@ resource "helm_release" "flink_operator" {
     kubernetes.operator.metrics.reporter.prom.class: org.apache.flink.metrics.prometheus.PrometheusReporter
     kubernetes.operator.metrics.reporter.prom.port: 9999
     # Configure node groups
-    kubernetes.jobmanager.node-selector: eks.amazonaws.com/nodegroup:${var.node_groups.jobmanager.node_group_name}
-    kubernetes.taskmanager.node-selector: eks.amazonaws.com/nodegroup:${var.node_groups.taskmanager.node_group_name}
-    kubernetes.jobmanager.annotations: prometheus.io/scrape:true,prometheus.io/port:9999
+    kubernetes.jobmanager.node-selector: eks.amazonaws.com/nodegroup:${var.node_groups.on_demand.node_group_name}
+    kubernetes.taskmanager.node-selector: eks.amazonaws.com/nodegroup:${var.node_groups.spot.node_group_name}
+    kubernetes.jobmanager.annotations: prometheus.io/scrape:true, prometheus.io/port:9999
     EOT
 
  }

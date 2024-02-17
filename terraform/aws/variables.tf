@@ -45,16 +45,16 @@ variable "node_groups" {
   type        = map(any)
 
   default = {
-    jobmanager = {
-      node_group_name = "flink-jobmanager"
+    on_demand = {
+      node_group_name = "flink-ng-od"
       max_instances = 10
-      instance_types = ["t3.medium"]
+      instance_types = ["t3.micro","t3.medium"]
       capacity_type = "ON_DEMAND"
     },
-    taskmanager = {
-      node_group_name = "flink-taskmanager"
-      max_instances = 10
-      instance_types = ["t3.large"]
+    spot = {
+      node_group_name = "flink-ng-spot"
+      max_instances = 50
+      instance_types = ["t3.micro","t3.medium","t3.large"]
       capacity_type = "SPOT"
     }
   }
