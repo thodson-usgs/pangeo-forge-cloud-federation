@@ -63,3 +63,41 @@ resource "helm_release" "flink_operator" {
     helm_release.cert_manager,
   ]
 }
+
+#resource "kubernetes_manifest" "flink_session_deployment" {
+#  manifest = {
+#    apiVersion = "flink.apache.org/v1beta1"
+#    kind       = "FlinkDeployment"
+#    metadata = {
+#      name = "pangeo-forge-flink-session"
+#    }
+#
+#    spec = {
+#      image = "flink:1.16"
+#      flinkVersion : "v1_16"
+#      flinkConfiguration : {
+#        "taskmanager.numberOfTaskSlots" = "2"
+#      }
+#      serviceAccount : "flink"
+#      jobManager = {
+#        replicas = 1
+#        resources = {
+#          memory = "2048M"
+#          cpu    = "1"
+#        }
+#      }
+#      taskManager = {
+#        replicas = 2
+#        resources = {
+#          memory = "2048M"
+#          cpu    = "1"
+#        }
+#      }
+#    }
+#  }
+#
+#  depends_on = [
+#    helm_release.flink_operator
+#  ]
+#}
+#
