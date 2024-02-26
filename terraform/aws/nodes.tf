@@ -29,19 +29,24 @@ resource "aws_iam_role_policy_attachment" "node_worker_ecr_policy_attachment" {
   role       = aws_iam_role.nodegroup.name
 }
 
-resource "aws_eks_node_group" "core_nodes" {
+resource "aws_eks_node_group" "flink_nodes" {
+  for_each = var.node_groups
   cluster_name    = aws_eks_cluster.cluster.name
-  node_group_name = "core"
+  node_group_name = each.value.node_group_name
   node_role_arn   = aws_iam_role.nodegroup.arn
 
   # FIXME: Need to restrict this to a single AZ maybe
   subnet_ids = data.aws_subnets.default.ids
 
-  instance_types = [var.instance_type]
+  instance_types = each.value.instance_types
+
+  capacity_type = each.value.capacity_type
+
+  #tags = {"k8s.io/cluster-autoscaler/${var.cluster_name}" = "", "k8s.io/cluster-autoscaler/enabled" = ""}
 
   scaling_config {
     desired_size = 1
-    max_size     = var.max_instances
+    max_size     = each.value.max_instances
     min_size     = 0
   }
 
@@ -49,6 +54,7 @@ resource "aws_eks_node_group" "core_nodes" {
     # Allow cluster-autoscaler to change the size of nodepool without messing up terraform
     ignore_changes = [scaling_config[0].desired_size]
   }
+
   update_config {
     max_unavailable = 1
   }
