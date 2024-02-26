@@ -49,14 +49,14 @@ resource "helm_release" "flink_operator" {
     name = "defaultConfiguration.flink-conf\\.yaml"
     value = <<-EOT
     # Enable prometheus metrics for all
-    kubernetes.operator.metrics.reporter.prom.class: org.apache.flink.metrics.prometheus.PrometheusReporter
-    kubernetes.operator.metrics.reporter.prom.port: 9999
+    kubernetes.operator.metrics.reporter.prom.class: "org.apache.flink.metrics.prometheus.PrometheusReporter"
+    kubernetes.operator.metrics.reporter.prom.port: "9999"
     # Configure node groups
-    kubernetes.jobmanager.node-selector: eks.amazonaws.com/nodegroup:${var.node_groups.on_demand.node_group_name}
-    kubernetes.taskmanager.node-selector: eks.amazonaws.com/nodegroup:${var.node_groups.spot.node_group_name}
+    kubernetes.jobmanager.node-selector: "eks.amazonaws.com/nodegroup:${var.node_groups.on_demand.node_group_name}"
+    kubernetes.taskmanager.node-selector: "eks.amazonaws.com/nodegroup:${var.node_groups.spot.node_group_name}"
     kubernetes.jobmanager.annotations: 
-      -prometheus.io/scrape: true
-      -prometheus.io/port: 9999
+      -prometheus.io/scrape: "true"
+      -prometheus.io/port: "9999"
     EOT
 
  }
